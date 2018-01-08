@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">StarWarsApp</string>
+    <string name="greet_message">Welcome in StarWarsApp!\n Hope you\'ll enjoy this simple application!</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    
+    <!--Bottom navigation-->
+    <string name="bottom_nav_people">People</string>
+    <string name="bottom_nav_starships">Starships</string>
+    <string name="bottom_nav_vehicles">Vehicles</string>
+    <string name="bottom_nav_planets">Planets</string>
 </resources>

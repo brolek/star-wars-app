@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -13,6 +15,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -25,12 +28,47 @@ android {
     }
 }
 
+kapt { generateStubs = true }
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support:support-vector-drawable:26.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    def daggerVer = 2.11
+    def RetrofitVersion = '2.3.0'
+    def RxAndroidVersion = '2.0.1'
+    def RxJavaVersion = '2.1.0'
+    def RxKotlinVersion = '2.0.3'
+
+//    compile "com.google.dagger:dagger:$daggerVer"
+//    compile "com.google.dagger:dagger-android-support:$daggerVer"
+//    annotationProcessor "com.google.dagger:dagger-android-processor:$daggerVer"
+//    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVer"
+
+//    DAGGER
+    implementation "com.google.dagger:dagger:$daggerVer"
+    kapt  "com.google.dagger:dagger-compiler:$daggerVer"
+    implementation "com.google.dagger:dagger-android:$daggerVer"
+    kapt  "com.google.dagger:dagger-android-processor:$daggerVer"
+    implementation "com.google.dagger:dagger-android-support:$daggerVer"
+    kapt  "com.google.dagger:dagger-android-support:2.12"
+
+//    RETROFIT
+    implementation "com.squareup.retrofit2:retrofit:${RetrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-gson:${RetrofitVersion}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${RetrofitVersion}"
+
+    implementation "io.reactivex.rxjava2:rxjava:${RxJavaVersion}"
+    implementation "io.reactivex.rxjava2:rxkotlin:${RxKotlinVersion}"
+    implementation "io.reactivex.rxjava2:rxandroid:${RxAndroidVersion}"
+
+    // Data Binding
+    kapt "com.android.databinding:compiler:3.0.1"
 }
