@@ -13,16 +13,16 @@ import javax.inject.Inject
 class MainDataProviderImpl @Inject constructor(private val restService: NetworkService) : MainDataProvider {
 
 
-    override fun getPeople(): Observable<MainModels.PersonResult> {
+    override fun getPeople(page: Int): Observable<MainModels.PersonResult> {
         return restService
-                .getPeople()
+                .getPeople(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getVehicles(): Observable<MainModels.VehicleResult> {
+    override fun getVehicles(page: Int): Observable<MainModels.VehicleResult> {
         return restService
-                .getVehicles()
+                .getVehicles(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }

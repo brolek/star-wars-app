@@ -3,6 +3,7 @@ package pl.brolek.starwarsapp.network
 import io.reactivex.Observable
 import pl.brolek.starwarsapp.main.data.MainModels
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 /**
  * Created by Bartłomiej Rolek on 2018-01-08
@@ -10,8 +11,8 @@ import retrofit2.http.GET
 interface NetworkService {
 
     @GET("people/")
-    fun getPeople(): Observable<MainModels.PersonResult>
+    fun getPeople(@Query("page") page: Int): Observable<MainModels.PersonResult>
 
     @GET("vehicles/")
-    fun getVehicles(): Observable<MainModels.VehicleResult>
+    fun getVehicles(@Query("page") page: Int): Observable<MainModels.VehicleResult>
 }

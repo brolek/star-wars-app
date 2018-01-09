@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -25,17 +26,25 @@ class NetworkServiceModule {
 
     @Provides
     @Singleton
-    fun provideRetrofitClient(baseUrl: String, gson: Gson): Retrofit {
+    fun provideRetrofitClient(baseUrl: String, gson: Gson, okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl(baseUrl)
+                .client(okHttpClient)
                 .build()
     }
 
     @Provides
     @Singleton
     fun provideGson(): Gson = GsonBuilder().create()
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+                .build()
+    }
 
 
 }

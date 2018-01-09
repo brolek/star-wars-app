@@ -8,7 +8,7 @@ import pl.brolek.starwarsapp.main.data.MainModels
 interface MainContract {
 
     interface View {
-        fun showPeople(peopleList: List<MainModels.Person>)
+        fun showPeople(peopleList: List<MainModels.Person>, shouldAppend: Boolean, shouldLoadMore: Boolean)
         fun showVehicles(vehiclesList: List<MainModels.Vehicle>)
         fun showError(message: String)
     }
@@ -16,7 +16,7 @@ interface MainContract {
     interface Presenter {
         fun attachView(view: MainContract.View)
         fun detachView()
-        fun getPeople()
-        fun getVehicles()
+        fun getPeople(page: Int, shouldAppend: Boolean)
+        fun getVehicles(page: Int)
     }
 }

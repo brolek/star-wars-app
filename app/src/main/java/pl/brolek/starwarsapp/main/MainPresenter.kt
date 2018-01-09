@@ -23,16 +23,22 @@ class MainPresenter @Inject constructor(private val mainDataProvider: MainDataPr
         DisposableUtils.dispose(peopleDisposable)
     }
 
-    override fun getPeople() {
+    override fun getPeople(page: Int, shouldAppend: Boolean) {
         peopleDisposable = mainDataProvider
-                .getPeople()
-                .subscribe({ view?.showPeople(it.results) }, { t: Throwable -> view?.showError(t.message.toString()) })
+                .getPeople(page)
+                .subscribe({
+                    var shouldLoadMore = true
+                    if (it.next == null) {
+                        shouldLoadMore = false
+                    }
+                    view?.showPeople(it.results, shouldAppend, shouldLoadMore)
+                }, { t: Throwable -> view?.showError(t.message.toString()) })
     }
 
-    override fun getVehicles() {
+    override fun getVehicles(page: Int) {
         vehiclesDisposable = mainDataProvider
-                .getVehicles()
-                .subscribe({view?.showVehicles(it.results)}, { t: Throwable -> view?.showError(t.message.toString()) } )
+                .getVehicles(page)
+                .subscribe({ view?.showVehicles(it.results) }, { t: Throwable -> view?.showError(t.message.toString()) })
     }
 
 
