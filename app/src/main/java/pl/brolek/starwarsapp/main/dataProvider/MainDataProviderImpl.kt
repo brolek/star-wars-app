@@ -12,9 +12,17 @@ import javax.inject.Inject
  */
 class MainDataProviderImpl @Inject constructor(private val restService: NetworkService) : MainDataProvider {
 
+
     override fun getPeople(): Observable<MainModels.PersonResult> {
         return restService
                 .getPeople()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getVehicles(): Observable<MainModels.VehicleResult> {
+        return restService
+                .getVehicles()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }

@@ -5,6 +5,7 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.brolek.starwarsapp.R
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     private lateinit var mainComponent: MainComponent
     @Inject lateinit var presenter: MainContract.Presenter
     @Inject lateinit var peopleAdapter: PeopleAdapter
+    @Inject lateinit var vehiclesAdapter: VehiclesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +29,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         initializeInjection()
         setRecyclerParams()
         presenter.attachView(this)
+        setProgressBarVisible(true)
         presenter.getPeople()
 
         navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
@@ -50,28 +53,48 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_people -> {
-//                presenter.getPeople()
-//                message.setText(R.string.title_home)
+                if (main_recycler.adapter !is PeopleAdapter) {
+                    setProgressBarVisible(true)
+                    presenter.getPeople()
+                }
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_vehicles -> {
-                message.setText(R.string.title_notifications)
+                if (main_recycler.adapter !is VehiclesAdapter) {
+                    setProgressBarVisible(true)
+                    presenter.getVehicles()
+                }
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_starships -> {
-                message.setText(R.string.title_notifications)
                 return@OnNavigationItemSelectedListener true
             }
         }
         false
     }
 
+    private fun setProgressBarVisible(visible: Boolean) {
+        if (visible)
+            progress_bar.visibility = View.VISIBLE
+        else
+            progress_bar.visibility = View.GONE
+
+    }
+
     override fun showPeople(peopleList: List<MainModels.Person>) {
+        setProgressBarVisible(false)
         peopleAdapter.addElementsToList(peopleList)
         main_recycler.adapter = peopleAdapter
     }
 
+    override fun showVehicles(vehiclesList: List<MainModels.Vehicle>) {
+        setProgressBarVisible(false)
+        vehiclesAdapter.addElementsToList(vehiclesList)
+        main_recycler.adapter = vehiclesAdapter
+    }
+
     override fun showError(message: String) {
+        setProgressBarVisible(false)
         Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
     }
 

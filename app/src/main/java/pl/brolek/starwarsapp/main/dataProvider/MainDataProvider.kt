@@ -9,4 +9,6 @@ import pl.brolek.starwarsapp.main.data.MainModels
 interface MainDataProvider {
 
     fun getPeople(): Observable<MainModels.PersonResult>
+
+    fun getVehicles(): Observable<MainModels.VehicleResult>
 }

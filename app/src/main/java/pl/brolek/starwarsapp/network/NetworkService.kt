@@ -11,4 +11,7 @@ interface NetworkService {
 
     @GET("people/")
     fun getPeople(): Observable<MainModels.PersonResult>
+
+    @GET("vehicles/")
+    fun getVehicles(): Observable<MainModels.VehicleResult>
 }

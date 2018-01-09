@@ -12,6 +12,7 @@ class MainPresenter @Inject constructor(private val mainDataProvider: MainDataPr
 
     var view: MainContract.View? = null
     private var peopleDisposable: Disposable? = null
+    private var vehiclesDisposable: Disposable? = null
 
     override fun attachView(view: MainContract.View) {
         this.view = view
@@ -26,6 +27,12 @@ class MainPresenter @Inject constructor(private val mainDataProvider: MainDataPr
         peopleDisposable = mainDataProvider
                 .getPeople()
                 .subscribe({ view?.showPeople(it.results) }, { t: Throwable -> view?.showError(t.message.toString()) })
+    }
+
+    override fun getVehicles() {
+        vehiclesDisposable = mainDataProvider
+                .getVehicles()
+                .subscribe({view?.showVehicles(it.results)}, { t: Throwable -> view?.showError(t.message.toString()) } )
     }
 
 

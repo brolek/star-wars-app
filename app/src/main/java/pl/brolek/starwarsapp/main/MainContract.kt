@@ -9,6 +9,7 @@ interface MainContract {
 
     interface View {
         fun showPeople(peopleList: List<MainModels.Person>)
+        fun showVehicles(vehiclesList: List<MainModels.Vehicle>)
         fun showError(message: String)
     }
 
@@ -16,5 +17,6 @@ interface MainContract {
         fun attachView(view: MainContract.View)
         fun detachView()
         fun getPeople()
+        fun getVehicles()
     }
 }
