@@ -9,7 +9,7 @@ interface MainContract {
 
     interface View {
         fun showPeople(peopleList: List<MainModels.Person>, shouldAppend: Boolean, shouldLoadMore: Boolean)
-        fun showVehicles(vehiclesList: List<MainModels.Vehicle>)
+        fun showVehicles(vehiclesList: List<MainModels.Vehicle>, shouldAppend: Boolean, shouldLoadMore: Boolean)
         fun showError(message: String)
     }
 
@@ -17,6 +17,6 @@ interface MainContract {
         fun attachView(view: MainContract.View)
         fun detachView()
         fun getPeople(page: Int, shouldAppend: Boolean)
-        fun getVehicles(page: Int)
+        fun getVehicles(page: Int, shouldAppend: Boolean)
     }
 }

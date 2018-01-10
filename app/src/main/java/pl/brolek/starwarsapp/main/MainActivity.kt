@@ -10,8 +10,7 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import pl.brolek.starwarsapp.R
 import pl.brolek.starwarsapp.app.App
-import pl.brolek.starwarsapp.main.adapters.PeopleAdapter
-import pl.brolek.starwarsapp.main.adapters.VehiclesAdapter
+import pl.brolek.starwarsapp.main.adapters.MainRecyclerAdapter
 import pl.brolek.starwarsapp.main.data.MainModels
 import pl.brolek.starwarsapp.main.di.MainComponent
 import pl.brolek.starwarsapp.main.di.MainModule
@@ -21,8 +20,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, RecyclerListListene
 
     private lateinit var mainComponent: MainComponent
     @Inject lateinit var presenter: MainContract.Presenter
-    @Inject lateinit var peopleAdapter: PeopleAdapter
-    @Inject lateinit var vehiclesAdapter: VehiclesAdapter
+    @Inject lateinit var mainRecyclerAdapter: MainRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +29,8 @@ class MainActivity : AppCompatActivity(), MainContract.View, RecyclerListListene
         initializeInjection()
         setRecyclerParams()
         presenter.attachView(this)
-        setPeopleAdapter()
+        setProgressBarVisible(true)
+        setActionBarTitle(R.string.bottom_nav_people)
         presenter.getPeople(1, false)
 
         navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
@@ -48,26 +47,32 @@ class MainActivity : AppCompatActivity(), MainContract.View, RecyclerListListene
     }
 
     private fun setRecyclerParams() {
-        peopleAdapter.listener = this
+        main_recycler.adapter = mainRecyclerAdapter
+        mainRecyclerAdapter.listener = this
         main_recycler.layoutManager = LinearLayoutManager(applicationContext)
         main_recycler.itemAnimator = DefaultItemAnimator()
+    }
+
+    private fun setActionBarTitle(title: Int) {
+        supportActionBar?.title = resources.getString(title)
     }
 
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_people -> {
-                if (main_recycler.adapter !is PeopleAdapter) {
-                    setPeopleAdapter()
+//                if (mainRecyclerAdapter.getList().isNotEmpty() && mainRecyclerAdapter.getList()[0] !is MainModels.Person) {
+                    setActionBarTitle(R.string.bottom_nav_people)
+                    prepareForNewData()
                     presenter.getPeople(1, false)
-                }
+//                }
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_vehicles -> {
-                if (main_recycler.adapter !is VehiclesAdapter) {
-                    setProgressBarVisible(true)
-                    main_recycler.adapter = vehiclesAdapter
-                    presenter.getVehicles(1)
-                }
+//                if (mainRecyclerAdapter.getList().isNotEmpty() && mainRecyclerAdapter.getList()[0] !is MainModels.Vehicle) {
+                    setActionBarTitle(R.string.bottom_nav_vehicles)
+                    prepareForNewData()
+                    presenter.getVehicles(1, false)
+//                }
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_starships -> {
@@ -77,11 +82,9 @@ class MainActivity : AppCompatActivity(), MainContract.View, RecyclerListListene
         false
     }
 
-    private fun setPeopleAdapter() {
+    private fun prepareForNewData() {
         setProgressBarVisible(true)
-        main_recycler.adapter = peopleAdapter
-        peopleAdapter.resetParams()
-        supportActionBar?.title = resources.getString(R.string.bottom_nav_people)
+        mainRecyclerAdapter.resetParams()
     }
 
     private fun setProgressBarVisible(visible: Boolean) {
@@ -94,14 +97,18 @@ class MainActivity : AppCompatActivity(), MainContract.View, RecyclerListListene
     override fun showPeople(peopleList: List<MainModels.Person>, shouldAppend: Boolean, shouldLoadMore: Boolean) {
         setProgressBarVisible(false)
         if (shouldAppend)
-            peopleAdapter.appendToList(peopleList, shouldLoadMore)
+            mainRecyclerAdapter.appendToList(peopleList, shouldLoadMore)
         else
-            peopleAdapter.addElementsToList(peopleList)
+            mainRecyclerAdapter.addElementsToList(peopleList)
     }
 
-    override fun showVehicles(vehiclesList: List<MainModels.Vehicle>) {
+    override fun showVehicles(vehiclesList: List<MainModels.Vehicle>, shouldAppend: Boolean, shouldLoadMore: Boolean) {
         setProgressBarVisible(false)
-        vehiclesAdapter.addElementsToList(vehiclesList)
+        if (shouldAppend)
+            mainRecyclerAdapter.appendToList(vehiclesList, shouldLoadMore)
+        else
+            mainRecyclerAdapter.addElementsToList(vehiclesList)
+
     }
 
     override fun showError(message: String) {
@@ -111,9 +118,12 @@ class MainActivity : AppCompatActivity(), MainContract.View, RecyclerListListene
 
     override fun onLoadMoreTriggered() {
         if (main_recycler.adapter.itemCount > 0) {
-            if (main_recycler.adapter is PeopleAdapter) {
-                peopleAdapter.incrementActualPage()
-                presenter.getPeople(peopleAdapter.getActualPage(), true)
+            if (mainRecyclerAdapter.getList()[0] is MainModels.Person) {
+                mainRecyclerAdapter.incrementActualPage()
+                presenter.getPeople(mainRecyclerAdapter.getActualPage(), true)
+            } else if (mainRecyclerAdapter.getList()[0] is MainModels.Vehicle) {
+                mainRecyclerAdapter.incrementActualPage()
+                presenter.getVehicles(mainRecyclerAdapter.getActualPage(), true)
             }
         }
     }

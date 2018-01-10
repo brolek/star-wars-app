@@ -11,8 +11,7 @@ import javax.inject.Inject
 class MainPresenter @Inject constructor(private val mainDataProvider: MainDataProvider) : MainContract.Presenter {
 
     var view: MainContract.View? = null
-    private var peopleDisposable: Disposable? = null
-    private var vehiclesDisposable: Disposable? = null
+    private var itemListDisposable: Disposable? = null
 
     override fun attachView(view: MainContract.View) {
         this.view = view
@@ -20,11 +19,12 @@ class MainPresenter @Inject constructor(private val mainDataProvider: MainDataPr
 
     override fun detachView() {
         if (view != null) view = null
-        DisposableUtils.dispose(peopleDisposable)
+        DisposableUtils.dispose(itemListDisposable)
     }
 
     override fun getPeople(page: Int, shouldAppend: Boolean) {
-        peopleDisposable = mainDataProvider
+        DisposableUtils.dispose(itemListDisposable)
+        itemListDisposable = mainDataProvider
                 .getPeople(page)
                 .subscribe({
                     var shouldLoadMore = true
@@ -35,10 +35,17 @@ class MainPresenter @Inject constructor(private val mainDataProvider: MainDataPr
                 }, { t: Throwable -> view?.showError(t.message.toString()) })
     }
 
-    override fun getVehicles(page: Int) {
-        vehiclesDisposable = mainDataProvider
+    override fun getVehicles(page: Int, shouldAppend: Boolean) {
+        DisposableUtils.dispose(itemListDisposable)
+        itemListDisposable = mainDataProvider
                 .getVehicles(page)
-                .subscribe({ view?.showVehicles(it.results) }, { t: Throwable -> view?.showError(t.message.toString()) })
+                .subscribe({
+                    var shouldLoadMore = true
+                    if (it.next == null) {
+                        shouldLoadMore = false
+                    }
+                    view?.showVehicles(it.results, shouldAppend, shouldLoadMore)
+                }, { t: Throwable -> view?.showError(t.message.toString()) })
     }
 
 
