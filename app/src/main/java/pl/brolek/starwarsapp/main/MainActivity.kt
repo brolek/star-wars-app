@@ -31,8 +31,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, RecyclerListListene
         initializeInjection()
         setRecyclerParams()
         presenter.attachView(this)
-        setProgressBarVisible(true)
-        main_recycler.adapter = peopleAdapter
+        setPeopleAdapter()
         presenter.getPeople(1, false)
 
         navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
@@ -58,9 +57,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, RecyclerListListene
         when (item.itemId) {
             R.id.navigation_people -> {
                 if (main_recycler.adapter !is PeopleAdapter) {
-                    setProgressBarVisible(true)
-                    main_recycler.adapter = peopleAdapter
-                    peopleAdapter.resetParams()
+                    setPeopleAdapter()
                     presenter.getPeople(1, false)
                 }
                 return@OnNavigationItemSelectedListener true
@@ -78,6 +75,13 @@ class MainActivity : AppCompatActivity(), MainContract.View, RecyclerListListene
             }
         }
         false
+    }
+
+    private fun setPeopleAdapter() {
+        setProgressBarVisible(true)
+        main_recycler.adapter = peopleAdapter
+        peopleAdapter.resetParams()
+        supportActionBar?.title = resources.getString(R.string.bottom_nav_people)
     }
 
     private fun setProgressBarVisible(visible: Boolean) {

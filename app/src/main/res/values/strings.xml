@@ -5,10 +5,16 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    
+
     <!--Bottom navigation-->
     <string name="bottom_nav_people">People</string>
     <string name="bottom_nav_starships">Starships</string>
     <string name="bottom_nav_vehicles">Vehicles</string>
     <string name="bottom_nav_planets">Planets</string>
+
+    <!--Recycler Views-->
+    <string name="recycler_person_item_gender">Gender: %1$s</string>
+    <string name="recycler_person_item_birth_year">Birth year: %1$s</string>
+    <string name="recycler_person_item_height">Height: %1$s</string>
+    <string name="recycler_person_item_mass">Mass: %1$s</string>
 </resources>

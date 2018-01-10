@@ -14,20 +14,68 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_margin="16dp">
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
 
         <TextView
             android:id="@+id/recycler_person_item_name"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@{person.name}"
             android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/recycler_person_item_birth_year"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread" />
+
+        <TextView
+            android:id="@+id/recycler_person_item_birth_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/recycler_person_item_birth_year(person.birth_year)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recycler_person_item_name" />
+
+        <TextView
+            android:id="@+id/recycler_person_item_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/recycler_person_item_gender(person.gender)}"
+            app:layout_constraintBottom_toTopOf="@+id/recycler_person_item_height"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/recycler_person_item_height"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/recycler_person_item_height(person.height)}"
+            app:layout_constraintBottom_toTopOf="@+id/recycler_person_item_mass"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recycler_person_item_gender"
+            app:layout_constraintVertical_chainStyle="spread" />
+
+        <TextView
+            android:id="@+id/recycler_person_item_mass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/recycler_person_item_mass(person.mass)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recycler_person_item_height" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="8dp"
+            android:background="#80000000"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
 
     </android.support.constraint.ConstraintLayout>
+
+
 </layout>
