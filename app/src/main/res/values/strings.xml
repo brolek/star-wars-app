@@ -22,4 +22,10 @@
     <string name="recycler_starship_item_cost">Cost: %1$s</string>
     <string name="recycler_starship_item_passengers">Passengers: %1$s</string>
     <string name="recycler_starship_item_capacity">Capacity: %1$s</string>
+
+    <string name="recycler_vehicle_item_length">Length: %1$s</string>
+    <string name="recycler_vehicle_item_max_speed">Max speed: %1$s</string>
+    <string name="recycler_vehicle_item_cost">Cost: %1$s</string>
+    <string name="recycler_vehicle_item_crew">Crew: %1$s</string>
+    <string name="recycler_vehicle_item_consumables">Consumables: %1$s</string>
 </resources>
