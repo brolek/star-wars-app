@@ -10,11 +10,16 @@
     <string name="bottom_nav_people">People</string>
     <string name="bottom_nav_starships">Starships</string>
     <string name="bottom_nav_vehicles">Vehicles</string>
-    <string name="bottom_nav_planets">Planets</string>
 
     <!--Recycler Views-->
     <string name="recycler_person_item_gender">Gender: %1$s</string>
     <string name="recycler_person_item_birth_year">Birth year: %1$s</string>
     <string name="recycler_person_item_height">Height: %1$s</string>
     <string name="recycler_person_item_mass">Mass: %1$s</string>
+
+    <string name="recycler_starship_item_length">Length: %1$s</string>
+    <string name="recycler_starship_item_max_speed">Max speed: %1$s</string>
+    <string name="recycler_starship_item_cost">Cost: %1$s</string>
+    <string name="recycler_starship_item_passengers">Passengers: %1$s</string>
+    <string name="recycler_starship_item_capacity">Capacity: %1$s</string>
 </resources>

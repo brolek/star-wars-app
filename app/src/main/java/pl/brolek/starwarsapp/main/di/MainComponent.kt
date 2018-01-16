@@ -10,5 +10,5 @@ import pl.brolek.starwarsapp.main.MainActivity
 @Subcomponent(modules = arrayOf(MainModule::class))
 interface MainComponent {
 
-    fun injectMainActivity(rankingActivity: MainActivity)
+    fun injectMainActivity(mainActivity: MainActivity)
 }

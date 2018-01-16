@@ -48,5 +48,18 @@ class MainPresenter @Inject constructor(private val mainDataProvider: MainDataPr
                 }, { t: Throwable -> view?.showError(t.message.toString()) })
     }
 
+    override fun getStarships(page: Int, shouldAppend: Boolean) {
+        DisposableUtils.dispose(itemListDisposable)
+        itemListDisposable = mainDataProvider
+                .getStarships(page)
+                .subscribe({
+                    var shouldLoadMore = true
+                    if (it.next == null) {
+                        shouldLoadMore = false
+                    }
+                    view?.showStarships(it.results, shouldAppend, shouldLoadMore)
+                }, { t: Throwable -> view?.showError(t.message.toString()) })
+    }
+
 
 }

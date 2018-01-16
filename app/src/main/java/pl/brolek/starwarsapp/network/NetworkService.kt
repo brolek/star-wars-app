@@ -15,4 +15,7 @@ interface NetworkService {
 
     @GET("vehicles/")
     fun getVehicles(@Query("page") page: Int): Observable<MainModels.VehicleResult>
+
+    @GET("starships/")
+    fun getStarships(@Query("page") page: Int): Observable<MainModels.StarshipResult>
 }

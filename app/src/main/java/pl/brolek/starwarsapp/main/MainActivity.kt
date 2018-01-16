@@ -76,6 +76,9 @@ class MainActivity : AppCompatActivity(), MainContract.View, RecyclerListListene
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_starships -> {
+                setActionBarTitle(R.string.bottom_nav_starships)
+                prepareForNewData()
+                presenter.getStarships(1, false)
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -111,6 +114,14 @@ class MainActivity : AppCompatActivity(), MainContract.View, RecyclerListListene
 
     }
 
+    override fun showStarships(starshipsList: List<MainModels.Starship>, shouldAppend: Boolean, shouldLoadMore: Boolean) {
+        setProgressBarVisible(false)
+        if (shouldAppend)
+            mainRecyclerAdapter.appendToList(starshipsList, shouldLoadMore)
+        else
+            mainRecyclerAdapter.addElementsToList(starshipsList)
+    }
+
     override fun showError(message: String) {
         setProgressBarVisible(false)
         Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
@@ -118,12 +129,19 @@ class MainActivity : AppCompatActivity(), MainContract.View, RecyclerListListene
 
     override fun onLoadMoreTriggered() {
         if (main_recycler.adapter.itemCount > 0) {
-            if (mainRecyclerAdapter.getList()[0] is MainModels.Person) {
-                mainRecyclerAdapter.incrementActualPage()
-                presenter.getPeople(mainRecyclerAdapter.getActualPage(), true)
-            } else if (mainRecyclerAdapter.getList()[0] is MainModels.Vehicle) {
-                mainRecyclerAdapter.incrementActualPage()
-                presenter.getVehicles(mainRecyclerAdapter.getActualPage(), true)
+            when {
+                mainRecyclerAdapter.getList()[0] is MainModels.Person -> {
+                    mainRecyclerAdapter.incrementActualPage()
+                    presenter.getPeople(mainRecyclerAdapter.getActualPage(), true)
+                }
+                mainRecyclerAdapter.getList()[0] is MainModels.Vehicle -> {
+                    mainRecyclerAdapter.incrementActualPage()
+                    presenter.getVehicles(mainRecyclerAdapter.getActualPage(), true)
+                }
+                mainRecyclerAdapter.getList()[0] is MainModels.Starship -> {
+                    mainRecyclerAdapter.incrementActualPage()
+                    presenter.getStarships(mainRecyclerAdapter.getActualPage(), true)
+                }
             }
         }
     }

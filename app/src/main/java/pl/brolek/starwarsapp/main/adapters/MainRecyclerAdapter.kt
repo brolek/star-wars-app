@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import pl.brolek.starwarsapp.databinding.MainRecyclerLoadingItemBinding
 import pl.brolek.starwarsapp.databinding.MainRecyclerPersonItemBinding
+import pl.brolek.starwarsapp.databinding.MainRecyclerStarshipItemBinding
 import pl.brolek.starwarsapp.databinding.MainRecyclerVehicleItemBinding
 import pl.brolek.starwarsapp.main.RecyclerListListener
 import pl.brolek.starwarsapp.main.data.MainModels
@@ -45,7 +46,7 @@ class MainRecyclerAdapter @Inject constructor(val context: Context) : RecyclerVi
         notifyDataSetChanged()
     }
 
-    fun getList() : List<MainModels.RecyclerItem> = itemsList
+    fun getList(): List<MainModels.RecyclerItem> = itemsList
 
     fun appendToList(itemsList: List<MainModels.RecyclerItem>, shouldLoadMore: Boolean) {
         this.shouldLoadMore = shouldLoadMore
@@ -66,6 +67,10 @@ class MainRecyclerAdapter @Inject constructor(val context: Context) : RecyclerVi
             VEHICLE_VIEW_TYPE -> {
                 val view = MainRecyclerVehicleItemBinding.inflate(inflater, parent, false)
                 VehicleViewHolder(view)
+            }
+            STARSHIP_VIEW_TYPE -> {
+                val view = MainRecyclerStarshipItemBinding.inflate(inflater, parent, false)
+                StarshipViewHolder(view)
             }
             else -> {
                 val view = MainRecyclerLoadingItemBinding.inflate(inflater, parent, false)
@@ -91,9 +96,9 @@ class MainRecyclerAdapter @Inject constructor(val context: Context) : RecyclerVi
         when {
             holder is PeopleViewHolder -> setDataToPersonElements(holder.view, position)
             holder is VehicleViewHolder -> setDataToVehicleElements(holder.view, position)
+            holder is StarshipViewHolder -> setDataToStarshipElements(holder.view, position)
             shouldLoadMore -> listener?.onLoadMoreTriggered()
         }
-
     }
 
     private fun setDataToPersonElements(holder: MainRecyclerPersonItemBinding?, position: Int) {
@@ -104,6 +109,11 @@ class MainRecyclerAdapter @Inject constructor(val context: Context) : RecyclerVi
     private fun setDataToVehicleElements(holder: MainRecyclerVehicleItemBinding?, position: Int) {
         val vehicleItem = itemsList[position] as MainModels.Vehicle
         holder?.vehicle = vehicleItem
+    }
+
+    private fun setDataToStarshipElements(holder: MainRecyclerStarshipItemBinding?, position: Int) {
+        val starshipItem = itemsList[position] as MainModels.Starship
+        holder?.starship = starshipItem
     }
 
     inner class PeopleViewHolder(var view: MainRecyclerPersonItemBinding) : RecyclerView.ViewHolder(view.root) {
@@ -117,6 +127,13 @@ class MainRecyclerAdapter @Inject constructor(val context: Context) : RecyclerVi
 
         fun bind(vehicle: MainModels.Vehicle) {
             view.vehicle = vehicle
+        }
+    }
+
+    inner class StarshipViewHolder(var view: MainRecyclerStarshipItemBinding) : RecyclerView.ViewHolder(view.root) {
+
+        fun bind(starship: MainModels.Starship) {
+            view.starship = starship
         }
     }
 

@@ -11,4 +11,6 @@ interface MainDataProvider {
     fun getPeople(page: Int): Observable<MainModels.PersonResult>
 
     fun getVehicles(page: Int): Observable<MainModels.VehicleResult>
+
+    fun getStarships(page: Int): Observable<MainModels.StarshipResult>
 }

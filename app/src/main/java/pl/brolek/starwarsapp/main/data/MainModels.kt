@@ -10,6 +10,8 @@ class MainModels {
 
     data class VehicleResult(val count: Int, val next: String, val previous: Any, val results: List<Vehicle>)
 
+    data class StarshipResult(val count: Int, val next: String, val previous: Any, val results: List<Starship>)
+
     abstract class RecyclerItem
 
     data class Person(val name: String, val height: String, val mass: String, val hair_color: String,
@@ -23,5 +25,12 @@ class MainModels {
                        val passengers: String, val cargo_capacity: String, val consumables: String,
                        val vehicle_class: String, val pilots: List<String>, val films: List<String>,
                        val created: String, val edited: String, val url: String) : RecyclerItem()
+
+    data class Starship(val name: String, val model: String, val manufacturer: String, val cost_in_credits: String,
+                        val length: String, val max_atmosphering_speed: String, val crew: String,
+                        val passengers: String, val cargo_capacity: String, val consumables: String,
+                        val hyperdrive_rating: String, val MGLT: String, val starship_class: String,
+                        val pilots: List<String>, val films: List<String>, val created: String, val edited: String,
+                        val url: String) : RecyclerItem()
 
 }

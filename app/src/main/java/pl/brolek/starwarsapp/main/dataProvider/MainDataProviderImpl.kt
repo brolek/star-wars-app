@@ -27,4 +27,11 @@ class MainDataProviderImpl @Inject constructor(private val restService: NetworkS
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
+    override fun getStarships(page: Int): Observable<MainModels.StarshipResult> {
+        return restService
+                .getStarships(page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
 }
